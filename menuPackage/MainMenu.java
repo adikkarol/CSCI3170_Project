@@ -26,19 +26,26 @@ public class MainMenu {
             System.out.print("Enter your choice: ");
             choice = reader.nextInt();
             System.out.println();
-            
+
             switch(choice){
                 case 1:
                     AdministatorMenu adminMenu = new AdministatorMenu(db);
                     adminMenu.callAdminMenu();
+                    break;
+                
+                case 2:
+                    SalespersonMenu salesMenu = new SalespersonMenu(db);
+                    salesMenu.callSalesMenu();
+                    break;
+
+                case 3:
+                    ManagerMenu managerMenu = new ManagerMenu(db);
+                    managerMenu.callManagerMenu();
                     break;
             }
 
         }
 
     }
-
-
-
 
 }

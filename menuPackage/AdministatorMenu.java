@@ -66,8 +66,8 @@ public class AdministatorMenu {
             Statement stmt = db.conn.createStatement();
             stmt.executeUpdate("CREATE TABLE Category (CatID INTEGER(1) PRIMARY KEY NOT NULL, CatName VARCHAR(20) NOT NULL)");
             stmt.executeUpdate("CREATE TABLE Manufacturer (ManuID INTEGER(2) PRIMARY KEY NOT NULL, ManuName VARCHAR(20) NOT NULL, ManuAddress VARCHAR(50) NOT NULL, ManuPhone INTEGER(8) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Part (PartID INTEGER(3) PRIMARY KEY NOT NULL, PartName VARCHAR(20) NOT NULL, PartPrice INTEGER(5) NOT NULL, ManuID INTEGER(2) NOT NULL, CatID INTEGER(1) NOT NULL, PartWarranty INTEGER(2) NOT NULL, PartAvilQuan INTEGER(2) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Salesperson (SalesID INTEGER(2) PRIMARY KEY NOT NULL, SalesName VARCHAR(20) NOT NULL, SalesAddress VARCHAR(50) NOT NULL, SalesPhone INTEGER(8) NOT NULL, SalesExperiece INTEGER(1) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE Part (PartID INTEGER(3) PRIMARY KEY NOT NULL, PartName VARCHAR(20) NOT NULL, PartPrice INTEGER(5) NOT NULL, ManuID INTEGER(2) NOT NULL, CatID INTEGER(1) NOT NULL, PartWarranty INTEGER(2) NOT NULL, PartAvailQuan INTEGER(2) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE Salesperson (SalesID INTEGER(2) PRIMARY KEY NOT NULL, SalesName VARCHAR(20) NOT NULL, SalesAddress VARCHAR(50) NOT NULL, SalesPhone INTEGER(8) NOT NULL, SalesExperience INTEGER(1) NOT NULL)");
             stmt.executeUpdate("CREATE TABLE Transaction (TransID INTEGER(4) PRIMARY KEY NOT NULL, PartID INTEGER(3) NOT NULL, SalesID INTEGER(2) NOT NULL, TransDate DATE NOT NULL)");
             System.out.println("Done! Database is initialized!");
             
