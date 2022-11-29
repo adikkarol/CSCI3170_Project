@@ -1,0 +1,2 @@
+
+// SELECT T.ManuID, M.ManuName, Sum(T.totalPart) as S
