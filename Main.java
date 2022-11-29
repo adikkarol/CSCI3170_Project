@@ -1,11 +1,12 @@
 import java.util.Scanner;
-import menuPackage.*;
+
+import menus.*;
 import tools.Database;
 
 import java.sql.*;
 
 public class Main {
-    static Scanner reader = new Scanner(System.in);
+    Scanner reader = new Scanner(System.in);
 
     public static void main(String args[]) {
         // Establish connection to the DB
@@ -14,10 +15,10 @@ public class Main {
             db.establishConnection();
         }
         catch(SQLException e){
-            System.out.println(e);
+            System.err.println(e);
         }
         catch(ClassNotFoundException e){
-            System.out.println(e);
+            System.err.println(e);
         }
         
         MainMenu mainMenu = new MainMenu(db);
