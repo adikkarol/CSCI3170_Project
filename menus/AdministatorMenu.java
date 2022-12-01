@@ -25,40 +25,44 @@ public class AdministatorMenu {
     // Call Admin Menu
     public void callAdminMenu(){
         int choice = 0;
+        while (choice != 5){
+            try {
+                System.out.println("-----Operations for administrator menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. Create all tables");
+                System.out.println("2. Delete all tables");
+                System.out.println("3. Load from datafile");
+                System.out.println("4. Show content of a table");
+                System.out.println("5. Return to the main menu");
+                
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
 
-        try {
-            System.out.println("-----Operations for administrator menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Create all tables");
-            System.out.println("2. Delete all tables");
-            System.out.println("3. Load from datafile");
-            System.out.println("4. Show content of a table");
-            System.out.println("5. Return to the main menu");
-            
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
-
-            switch(choice){
-                case 1:
-                    createTables();
-                    break;
-                case 2:
-                    deleteTables();
-                    break;
-                case 3:
-                    loadFromDatafile();
-                    break;
-                case 4:
-                    showContent();
-                    break;
-                case 5:
-                    System.out.println();
-                    break;
+                switch(choice){
+                    case 1:
+                        createTables();
+                        break;
+                    case 2:
+                        deleteTables();
+                        break;
+                    case 3:
+                        loadFromDatafile();
+                        break;
+                    case 4:
+                        showContent();
+                        break;
+                    case 5:
+                        System.out.println();
+                        break;
+                }
+            }
+            catch (NumberFormatException e){
+                System.err.println(e);
+                choice = -1;
+                
             }
         }
-        catch (NumberFormatException e){
-            System.err.println(e);
-        }
+
        
     }
 

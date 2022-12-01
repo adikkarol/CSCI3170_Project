@@ -16,40 +16,43 @@ public class ManagerMenu {
     // Call Manager Menu
     public void callManagerMenu(){
         int choice = 0;
+        while (choice !=5){
+            try {
+                System.out.println("-----Operations for manager menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. List all salespersons");
+                System.out.println("2. Count the no. of sales record of each salesperson under a specific range on years of experience");
+                System.out.println("3. Show the total sales value of each manufacturer");
+                System.out.println("4. Show the N most popular part");
+                System.out.println("5. Return to the main menu");
+            
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
 
-        try {
-            System.out.println("-----Operations for manager menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. List all salespersons");
-            System.out.println("2. Count the no. of sales record of each salesperson under a specific range on years of experience");
-            System.out.println("3. Show the total sales value of each manufacturer");
-            System.out.println("4. Show the N most popular part");
-            System.out.println("5. Return to the main menu");
-        
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
+                switch(choice){
+                    case 1:
+                        listAllSalespersons();
+                        break;
+                    case 2:
+                        countTrans();
+                        break;
+                    case 3:
+                        showTotalSales();
+                        break;
+                    case 4:
+                        showNMostPop();
+                        break;
+                    case 5:
+                        System.out.println();
+                        break;
+                }  
+            }
+            catch(NumberFormatException e){
+                System.err.println(e);
+                choice = -1;
+            }
+        }
 
-            switch(choice){
-                case 1:
-                    listAllSalespersons();
-                    break;
-                case 2:
-                    countTrans();
-                    break;
-                case 3:
-                    showTotalSales();
-                    break;
-                case 4:
-                    showNMostPop();
-                    break;
-                case 5:
-                    System.out.println();
-                    break;
-            }  
-        }
-        catch(NumberFormatException e){
-            System.err.println(e);
-        }
 
     }
 

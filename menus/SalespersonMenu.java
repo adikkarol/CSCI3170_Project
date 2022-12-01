@@ -16,31 +16,33 @@ public class SalespersonMenu {
     // Call Sales Menu
     public void callSalesMenu(){
         int choice = 0;
-
-        try {
-            System.out.println("-----Operations for salesperson menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Search for parts");
-            System.out.println("2. Sell a part");
-            System.out.println("3. Return to the main menu");
-            
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
-            
-            switch(choice){
-                case 1:
-                    searchParts();
-                    break;
-                case 2:
-                    performTrans();
-                    break;
-                case 3:
-                    System.out.println();
-                    break;
+        while (choice != 3){
+            try {
+                System.out.println("-----Operations for salesperson menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. Search for parts");
+                System.out.println("2. Sell a part");
+                System.out.println("3. Return to the main menu");
+                
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
+                
+                switch(choice){
+                    case 1:
+                        searchParts();
+                        break;
+                    case 2:
+                        performTrans();
+                        break;
+                    case 3:
+                        System.out.println();
+                        break;
+                }
             }
-        }
-        catch(NumberFormatException e){
-            System.err.println(e);
+            catch(NumberFormatException e){
+                System.err.println(e);
+                choice =-1;
+            }
         }
     }
 
