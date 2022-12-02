@@ -25,41 +25,44 @@ public class AdministatorMenu {
     // Call Admin Menu
     public void callAdminMenu(){
         int choice = 0;
-        try {
-            System.out.println("-----Operations for administrator menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Create all tables");
-            System.out.println("2. Delete all tables");
-            System.out.println("3. Load from datafile");
-            System.out.println("4. Show content of a table");
-            System.out.println("5. Return to the main menu");
-            
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
-
-            switch(choice){
-                case 1:
-                    createTables();
-                    break;
-                case 2:
-                    deleteTables();
-                    break;
-                case 3:
-                    loadFromDatafile();
-                    break;
-                case 4:
-                    showContent();
-                    break;
-                case 5:
-                    System.out.println();
-                    break;
+        
+        while (choice != 5){
+            try {
+                System.out.println("-----Operations for administrator menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. Create all tables");
+                System.out.println("2. Delete all tables");
+                System.out.println("3. Load from datafile");
+                System.out.println("4. Show content of a table");
+                System.out.println("5. Return to the main menu");
+                
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
+    
+                switch(choice){
+                    case 1:
+                        createTables();
+                        break;
+                    case 2:
+                        deleteTables();
+                        break;
+                    case 3:
+                        loadFromDatafile();
+                        break;
+                    case 4:
+                        showContent();
+                        break;
+                    case 5:
+                        System.out.println();
+                        break;
+                }
+            }
+            catch (NumberFormatException e){
+                System.err.println(e);
+                choice = 5;
             }
         }
-        catch (NumberFormatException e){
-            System.err.println(e);
-            // choice = 0;
-            
-        }
+        
 
     }
 
@@ -69,11 +72,11 @@ public class AdministatorMenu {
 
         try {
             Statement stmt = db.conn.createStatement();
-            stmt.executeUpdate("CREATE TABLE Category (CatID INTEGER(1) PRIMARY KEY NOT NULL, CatName VARCHAR(20) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Manufacturer (ManuID INTEGER(2) PRIMARY KEY NOT NULL, ManuName VARCHAR(20) NOT NULL, ManuAddress VARCHAR(50) NOT NULL, ManuPhone INTEGER(8) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Part (PartID INTEGER(3) PRIMARY KEY NOT NULL, PartName VARCHAR(20) NOT NULL, PartPrice INTEGER(5) NOT NULL, ManuID INTEGER(2) NOT NULL, CatID INTEGER(1) NOT NULL, PartWarranty INTEGER(2) NOT NULL, PartAvailQuan INTEGER(2) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Salesperson (SalesID INTEGER(2) PRIMARY KEY NOT NULL, SalesName VARCHAR(20) NOT NULL, SalesAddress VARCHAR(50) NOT NULL, SalesPhone INTEGER(8) NOT NULL, SalesExperience INTEGER(1) NOT NULL)");
-            stmt.executeUpdate("CREATE TABLE Transaction (TransID INTEGER(4) PRIMARY KEY NOT NULL, PartID INTEGER(3) NOT NULL, SalesID INTEGER(2) NOT NULL, TransDate DATE NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE category (CatID INTEGER(1) PRIMARY KEY NOT NULL, CatName VARCHAR(20) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE manufacturer (ManuID INTEGER(2) PRIMARY KEY NOT NULL, ManuName VARCHAR(20) NOT NULL, ManuAddress VARCHAR(50) NOT NULL, ManuPhone INTEGER(8) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE part (PartID INTEGER(3) PRIMARY KEY NOT NULL, PartName VARCHAR(20) NOT NULL, PartPrice INTEGER(5) NOT NULL, ManuID INTEGER(2) NOT NULL, CatID INTEGER(1) NOT NULL, PartWarranty INTEGER(2) NOT NULL, PartAvailQuan INTEGER(2) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE salesperson (SalesID INTEGER(2) PRIMARY KEY NOT NULL, SalesName VARCHAR(20) NOT NULL, SalesAddress VARCHAR(50) NOT NULL, SalesPhone INTEGER(8) NOT NULL, SalesExperience INTEGER(1) NOT NULL)");
+            stmt.executeUpdate("CREATE TABLE transaction (TransID INTEGER(4) PRIMARY KEY NOT NULL, PartID INTEGER(3) NOT NULL, SalesID INTEGER(2) NOT NULL, TransDate DATE NOT NULL)");
             stmt.close();
         }
         catch (SQLException e){
@@ -89,11 +92,11 @@ public class AdministatorMenu {
 
         try {
             Statement stmt = db.conn.createStatement();
-            stmt.executeUpdate("DROP TABLE Category");
-            stmt.executeUpdate("DROP TABLE Manufacturer");
-            stmt.executeUpdate("DROP TABLE Part");
-            stmt.executeUpdate("DROP TABLE Salesperson");
-            stmt.executeUpdate("DROP TABLE Transaction");
+            stmt.executeUpdate("DROP TABLE category");
+            stmt.executeUpdate("DROP TABLE manufacturer");
+            stmt.executeUpdate("DROP TABLE part");
+            stmt.executeUpdate("DROP TABLE salesperson");
+            stmt.executeUpdate("DROP TABLE transaction");
             stmt.close();
         }
         catch(SQLException e){
@@ -112,7 +115,7 @@ public class AdministatorMenu {
             System.out.print("Processing...");
             
             File dataFolder = new File("./" + dataFolderName);
-            
+
             if (dataFolder.exists()){
                 File[] allFiles = dataFolder.listFiles();
                 
@@ -148,27 +151,27 @@ public class AdministatorMenu {
         System.out.println("Content of table " + tableName + ":");
 
         switch (tableName){
-            case "Category":
+            case "category":
                 CategoryInterface categoryInt = new CategoryInterface(db);
                 categoryInt.showInterface();
                 break;
 
-            case "Manufacturer":
+            case "manufacturer":
                 ManufacturerInterface manufacturerInt = new ManufacturerInterface(db);
                 manufacturerInt.showInterface();
                 break;
 
-            case "Part":
+            case "part":
                 PartInterface partInt = new PartInterface(db);
                 partInt.showInterface();
                 break;
             
-            case "Salesperson":
+            case "salesperson":
                 SalespersonInterface salesInt = new SalespersonInterface(db);
                 salesInt.showInterface();
                 break;
             
-            case "Transaction":
+            case "transaction":
                 TransactionInterface transInt = new TransactionInterface(db);
                 transInt.showInterface();
                 break;
@@ -191,28 +194,28 @@ public class AdministatorMenu {
             
             switch (fileName){
                 case "category.txt":
-                    pstmt = db.conn.prepareStatement("INSERT INTO Category VALUES (?,?)");
-                    if (!executeSQLUpdate(fileScanner, pstmt, "Category")) return false;
+                    pstmt = db.conn.prepareStatement("INSERT INTO category VALUES (?,?)");
+                    if (!executeSQLUpdate(fileScanner, pstmt, "category")) return false;
                     break;
                 
                 case "manufacturer.txt":
-                    pstmt = db.conn.prepareStatement("INSERT INTO Manufacturer VALUES (?,?,?,?)");
-                    if (!executeSQLUpdate(fileScanner, pstmt, "Manufacturer")) return false;
+                    pstmt = db.conn.prepareStatement("INSERT INTO manufacturer VALUES (?,?,?,?)");
+                    if (!executeSQLUpdate(fileScanner, pstmt, "manufacturer")) return false;
                     break;
                 
                 case "part.txt":
-                    pstmt = db.conn.prepareStatement("INSERT INTO Part VALUES (?,?,?,?,?,?,?)");
-                    if (!executeSQLUpdate(fileScanner, pstmt, "Part")) return false;
+                    pstmt = db.conn.prepareStatement("INSERT INTO part VALUES (?,?,?,?,?,?,?)");
+                    if (!executeSQLUpdate(fileScanner, pstmt, "part")) return false;
                     break;
                 
                 case "salesperson.txt":
-                    pstmt = db.conn.prepareStatement("INSERT INTO Salesperson VALUES (?,?,?,?,?)");
-                    if (!executeSQLUpdate(fileScanner, pstmt, "Salesperson")) return false;
+                    pstmt = db.conn.prepareStatement("INSERT INTO salesperson VALUES (?,?,?,?,?)");
+                    if (!executeSQLUpdate(fileScanner, pstmt, "salesperson")) return false;
                     break;
                 
                 case "transaction.txt":
-                    pstmt = db.conn.prepareStatement("INSERT INTO Transaction VALUES (?,?,?,?)");
-                    if (!executeSQLUpdate(fileScanner, pstmt, "Transaction")) return false;
+                    pstmt = db.conn.prepareStatement("INSERT INTO transaction VALUES (?,?,?,?)");
+                    if (!executeSQLUpdate(fileScanner, pstmt, "transaction")) return false;
                     break;
 
                 default:
@@ -246,7 +249,7 @@ public class AdministatorMenu {
                 String[] inputs = line.split("\t");
                 
                 // If table == Transaction, change Date format
-                if (table == "Transaction"){
+                if (table == "transaction"){
                     String[] ddmmyyyy = inputs[3].split("/");
                     inputs[3] = ddmmyyyy[2] + "-" + ddmmyyyy[1] + "-" + ddmmyyyy[0];
                 }

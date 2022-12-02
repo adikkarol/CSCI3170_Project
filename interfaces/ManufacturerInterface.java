@@ -15,12 +15,12 @@ public class ManufacturerInterface {
             String manuID, manuName, manuAddress, manuPhone;
             
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Manufacturer;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM manufacturer;");
 
-            System.out.print("| " + "manuID" + " | ");
-            System.out.print("manuName" + " | ");
-            System.out.print("manuAddress" + " | ");
-            System.out.println("manuPhone" + " |");
+            System.out.print("| " + "m_id" + " | ");
+            System.out.print("m_name" + " | ");
+            System.out.print("m_address" + " | ");
+            System.out.println("m_phone_number" + " |");
 
             while (rs.next()){
                 manuID = rs.getString(1);

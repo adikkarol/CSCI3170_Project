@@ -16,41 +16,43 @@ public class ManagerMenu {
     // Call Manager Menu
     public void callManagerMenu(){
         int choice = 0;
-        try {
-            System.out.println("-----Operations for manager menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. List all salespersons");
-            System.out.println("2. Count the no. of sales record of each salesperson under a specific range on years of experience");
-            System.out.println("3. Show the total sales value of each manufacturer");
-            System.out.println("4. Show the N most popular part");
-            System.out.println("5. Return to the main menu");
-        
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
 
-            switch(choice){
-                case 1:
-                    listAllSalespersons();
-                    break;
-                case 2:
-                    countTrans();
-                    break;
-                case 3:
-                    showTotalSales();
-                    break;
-                case 4:
-                    showNMostPop();
-                    break;
-                case 5:
-                    System.out.println();
-                    break;
-            }  
+        while (choice != 5){
+            try {
+                System.out.println("-----Operations for manager menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. List all salespersons");
+                System.out.println("2. Count the no. of sales record of each salesperson under a specific range on years of experience");
+                System.out.println("3. Show the total sales value of each manufacturer");
+                System.out.println("4. Show the N most popular part");
+                System.out.println("5. Return to the main menu");
+            
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
+    
+                switch(choice){
+                    case 1:
+                        listAllSalespersons();
+                        break;
+                    case 2:
+                        countTrans();
+                        break;
+                    case 3:
+                        showTotalSales();
+                        break;
+                    case 4:
+                        showNMostPop();
+                        break;
+                    case 5:
+                        System.out.println();
+                        break;
+                }  
+            }
+            catch(NumberFormatException e){
+                System.err.println(e);
+                choice = 5;
+            }
         }
-        catch(NumberFormatException e){
-            System.err.println(e);
-            // choice = -1;
-        }
-
 
     }
 
@@ -87,26 +89,23 @@ public class ManagerMenu {
         
         try {
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Salesperson ORDER BY SalesExperience " + order + ";");
+            ResultSet rs = stmt.executeQuery("SELECT SalesID, SalesName, SalesPhone, SalesExperience FROM salesperson ORDER BY SalesExperience " + order + ";");
             
             // Interface for the Query
             ////////////////////////////////////
 
-            String salesID, salesName, salesAddress, salesPhone, salesExperience;
-            System.out.print("| " + "salesID" + " | ");
-            System.out.print("salesName" + " | ");
-            System.out.print("salesAddress" + " | ");
-            System.out.print("salesPhone" + " | ");
-            System.out.println("salesExperience" + " |");
+            String salesID, salesName, salesPhone, salesExperience;
+            System.out.print("| " + "ID" + " | ");
+            System.out.print("Name" + " | ");
+            System.out.print("Mobile Phone" + " | ");
+            System.out.println("Years of Experience" + " |");
             while (rs.next()){
                 salesID = rs.getString(1);
                 salesName = rs.getString(2);
-                salesAddress = rs.getString(3);
-                salesPhone = rs.getString(4);
-                salesExperience = rs.getString(5);
+                salesPhone = rs.getString(3);
+                salesExperience = rs.getString(4);
                 System.out.print("| " + salesID + " | ");
                 System.out.print(salesName + " | ");
-                System.out.print(salesAddress + " | ");
                 System.out.print(salesPhone + " | ");
                 System.out.println(salesExperience + " |");
             }
@@ -147,12 +146,12 @@ public class ManagerMenu {
             Statement stmt = db.conn.createStatement();
             stmt.executeUpdate("CREATE VIEW Temp as " + 
             "SELECT T.SalesID, count(*) as N " +
-            "FROM Transaction T " + 
-            "WHERE T.SalesID in (SELECT SalesID FROM Salesperson WHERE SalesExperience >= " + lowerBound + " AND SalesExperience <= " + upperBound + ") " + 
+            "FROM transaction T " + 
+            "WHERE T.SalesID in (SELECT SalesID FROM salesperson WHERE SalesExperience >= " + lowerBound + " AND SalesExperience <= " + upperBound + ") " + 
             "GROUP BY T.SalesID;");
 
             ResultSet rs = stmt.executeQuery("SELECT S.SalesID, SalesName, SalesExperience, N " +
-            "FROM Salesperson S, Temp T " +
+            "FROM salesperson S, Temp T " +
             "WHERE S.SalesID = T.SalesID " + 
             "ORDER BY S.SalesID DESC;");
             
@@ -199,16 +198,16 @@ public class ManagerMenu {
             Statement stmt = db.conn.createStatement();
             stmt.executeUpdate("CREATE VIEW Temp AS " + 
             "SELECT PartID, Count(*) AS N " + 
-            "FROM Transaction T " + 
+            "FROM transaction T " + 
             "GROUP BY PartID;");
 
             stmt.executeUpdate("CREATE VIEW Temp2 AS " + 
             "SELECT P.PartID, P.PartName, P.PartPrice*N AS totalPart, P.ManuID " + 
-            "FROM Part P, Temp T " + 
+            "FROM part P, Temp T " + 
             "WHERE P.PartID=T.PartID;");
 
             ResultSet rs = stmt.executeQuery("SELECT T.ManuID, M.ManuName, Sum(T.totalPart) AS S "+ 
-            "FROM Temp2 T, Manufacturer M " + 
+            "FROM Temp2 T, manufacturer M " + 
             "WHERE M.ManuID=T.ManuID " +
             "GROUP BY T.ManuID " + 
             "ORDER BY S DESC;");
@@ -266,11 +265,11 @@ public class ManagerMenu {
             Statement stmt = db.conn.createStatement();
             stmt.executeUpdate("CREATE VIEW Temp AS " +
             "SELECT PartID, Count(*) AS N " + 
-            "FROM Transaction T " + 
+            "FROM transaction T " + 
             "GROUP BY PartID;");
 
             ResultSet rs = stmt.executeQuery("SELECT P.PartID, P.PartName, T.N " + 
-            "FROM Part P, Temp T " + 
+            "FROM part P, Temp T " + 
             "WHERE P.PartID = T.PartID " + 
             "ORDER BY T.N DESC LIMIT " + n + ";");
 

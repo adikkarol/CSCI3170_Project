@@ -15,13 +15,13 @@ public class SalespersonInterface {
             String salesID, salesName, salesAddress, salesPhone, salesExperience;
             
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Salesperson;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM salesperson;");
 
-            System.out.print("| " + "salesID" + " | ");
-            System.out.print("salesName" + " | ");
-            System.out.print("salesAddress" + " | ");
-            System.out.print("salesPhone" + " | ");
-            System.out.println("salesExperience" + " |");
+            System.out.print("| " + "s_id" + " | ");
+            System.out.print("s_name" + " | ");
+            System.out.print("s_address" + " | ");
+            System.out.print("s_phone_number" + " | ");
+            System.out.println("s_experience" + " |");
 
             while (rs.next()){
                 salesID = rs.getString(1);

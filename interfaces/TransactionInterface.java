@@ -16,12 +16,12 @@ public class TransactionInterface {
             String[] yyyymmdd;
 
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Transaction;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM transaction;");
 
-            System.out.print("| " + "transID" + " | ");
-            System.out.print("partID" + " | ");
-            System.out.print("salesID" + " | ");
-            System.out.println("transDate" + " | ");
+            System.out.print("| " + "t_id" + " | ");
+            System.out.print("p_id" + " | ");
+            System.out.print("s_id" + " | ");
+            System.out.println("t_date" + " | ");
 
             while (rs.next()){
                 transID = rs.getString(1);

@@ -1,4 +1,5 @@
 package menus;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import tools.*;
 
@@ -17,35 +18,40 @@ public class MainMenu {
         System.out.println("Welcome to sales system!\n");
 
         while (choice != 4){
-            
-            System.out.println("-----Main menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Operations for administrator");
-            System.out.println("2. Operations for salesperson");
-            System.out.println("3. Operations for manager");
-            System.out.println("4. Exit the program");
-            
-            System.out.print("Enter your choice: ");
-            choice = reader.nextInt();
-            System.out.println();
-
-            switch(choice){
-                case 1:
-                    AdministatorMenu adminMenu = new AdministatorMenu(db);
-                    adminMenu.callAdminMenu();
-                    break;
+            try {
+                System.out.println("-----Main menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. Operations for administrator");
+                System.out.println("2. Operations for salesperson");
+                System.out.println("3. Operations for manager");
+                System.out.println("4. Exit the program");
                 
-                case 2:
-                    SalespersonMenu salesMenu = new SalespersonMenu(db);
-                    salesMenu.callSalesMenu();
-                    break;
-
-                case 3:
-                    ManagerMenu managerMenu = new ManagerMenu(db);
-                    managerMenu.callManagerMenu();
-                    break;
+                System.out.print("Enter your choice: ");
+                choice = reader.nextInt();
+                System.out.println();
+    
+                switch(choice){
+                    case 1:
+                        AdministatorMenu adminMenu = new AdministatorMenu(db);
+                        adminMenu.callAdminMenu();
+                        break;
+                    
+                    case 2:
+                        SalespersonMenu salesMenu = new SalespersonMenu(db);
+                        salesMenu.callSalesMenu();
+                        break;
+    
+                    case 3:
+                        ManagerMenu managerMenu = new ManagerMenu(db);
+                        managerMenu.callManagerMenu();
+                        break;
+                }
             }
-
+            catch(InputMismatchException e){
+                System.err.println(e);
+                choice = 4;
+            }
+           
         }
 
     }

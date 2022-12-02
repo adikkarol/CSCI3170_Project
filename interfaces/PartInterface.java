@@ -15,15 +15,15 @@ public class PartInterface {
             String partID, partName, partPrice, partWarranty, partAvilQuan, manuID, catID;
 
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Part;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM part;");
 
-            System.out.print("| " + "partID" + " | ");
-            System.out.print("partName" + " | ");
-            System.out.print("partPrice" + " | ");
-            System.out.print("manuID" + " | ");
-            System.out.print("catID" + " | ");
-            System.out.print("partWarranty" + " | ");
-            System.out.println("partAvilQuan" + " |");
+            System.out.print("| " + "p_id" + " | ");
+            System.out.print("p_name" + " | ");
+            System.out.print("p_price" + " | ");
+            System.out.print("m_id" + " | ");
+            System.out.print("c_id" + " | ");
+            System.out.print("p_warranty_period" + " | ");
+            System.out.println("p_available_quantity" + " |");
 
             while (rs.next()){
                 partID = rs.getString(1);

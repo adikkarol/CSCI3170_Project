@@ -16,32 +16,36 @@ public class SalespersonMenu {
     // Call Sales Menu
     public void callSalesMenu(){
         int choice = 0;
-        try {
-            System.out.println("-----Operations for salesperson menu-----");
-            System.out.println("What kinds of operation would you like to perform?");
-            System.out.println("1. Search for parts");
-            System.out.println("2. Sell a part");
-            System.out.println("3. Return to the main menu");
-            
-            System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(reader.nextLine());
-            
-            switch(choice){
-                case 1:
-                    searchParts();
-                    break;
-                case 2:
-                    performTrans();
-                    break;
-                case 3:
-                    System.out.println();
-                    break;
+
+        while(choice != 3){
+            try {
+                System.out.println("-----Operations for salesperson menu-----");
+                System.out.println("What kinds of operation would you like to perform?");
+                System.out.println("1. Search for parts");
+                System.out.println("2. Sell a part");
+                System.out.println("3. Return to the main menu");
+                
+                System.out.print("Enter your choice: ");
+                choice = Integer.parseInt(reader.nextLine());
+                
+                switch(choice){
+                    case 1:
+                        searchParts();
+                        break;
+                    case 2:
+                        performTrans();
+                        break;
+                    case 3:
+                        System.out.println();
+                        break;
+                }
+            }
+            catch(NumberFormatException e){
+                System.err.println(e);
+                choice = 3;
             }
         }
-        catch(NumberFormatException e){
-            System.err.println(e);
-            choice =-1;
-        }
+
     }
 
     // 1. Search for parts
@@ -111,7 +115,7 @@ public class SalespersonMenu {
         try {
             Statement stmt = db.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT P.PartID, P.PartName, M.ManuName, C.CatName, P.PartAvailQuan, P.PartWarranty, P.PartPrice " + 
-            "FROM Part P, Manufacturer M, Category C " + 
+            "FROM part P, manufacturer M, category C " + 
             "WHERE P.ManuID=M.ManuID AND " + searchQuery + " LIKE '%" + searchKeyword + "%' AND P.CatID=C.CatID " + 
             "ORDER BY P.PartPrice " + sortQuery + ";");
 
@@ -181,7 +185,7 @@ public class SalespersonMenu {
         try {
             Statement stmt = db.conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT P.PartID, P.PartName, P.PartAvailQuan " + 
-            "FROM Part P WHERE P.PartID = " + partChoice + ";");
+            "FROM part P WHERE P.PartID = " + partChoice + ";");
 
             String partID = null;
             String partName = null;
@@ -204,7 +208,7 @@ public class SalespersonMenu {
             }
             
             ResultSet rs1 = stmt.executeQuery("SELECT S.SalesID " + 
-            "FROM Salesperson S WHERE S.SalesID = " + salesChoice + ";");
+            "FROM salesperson S WHERE S.SalesID = " + salesChoice + ";");
 
             String salesID = null;
 
@@ -217,11 +221,11 @@ public class SalespersonMenu {
                 return;
             }
 
-            stmt.executeUpdate("UPDATE Part " + 
+            stmt.executeUpdate("UPDATE part " + 
             "SET PartAvailQuan = PartAvailQuan - 1 " + 
             "WHERE PartID = " + partChoice + ";");
 
-            ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) FROM Transaction;");
+            ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) FROM transaction;");
 
             int lastTransID = 0;
 
@@ -229,7 +233,7 @@ public class SalespersonMenu {
                 lastTransID = Integer.valueOf(rs2.getString(1));
             }
 
-            PreparedStatement pstmt = db.conn.prepareStatement("INSERT INTO Transaction VALUES (?,?,?,?)");
+            PreparedStatement pstmt = db.conn.prepareStatement("INSERT INTO transaction VALUES (?,?,?,?)");
             pstmt.setString(1, String.valueOf(lastTransID+1));
             pstmt.setString(2, String.valueOf(partChoice));
             pstmt.setString(3, String.valueOf(salesChoice));

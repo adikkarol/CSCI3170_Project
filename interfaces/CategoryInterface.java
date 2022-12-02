@@ -15,10 +15,10 @@ public class CategoryInterface {
             String catID, catName;
 
             Statement stmt = db.conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM Category;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM category;");
 
-            System.out.print("| " + "catID" + " | ");
-            System.out.println("catName" + " |");
+            System.out.print("| " + "c_id" + " | ");
+            System.out.println("c_name" + " |");
 
             while (rs.next()){
                 catID = rs.getString(1);
