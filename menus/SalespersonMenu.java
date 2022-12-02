@@ -16,33 +16,31 @@ public class SalespersonMenu {
     // Call Sales Menu
     public void callSalesMenu(){
         int choice = 0;
-        while (choice != 3){
-            try {
-                System.out.println("-----Operations for salesperson menu-----");
-                System.out.println("What kinds of operation would you like to perform?");
-                System.out.println("1. Search for parts");
-                System.out.println("2. Sell a part");
-                System.out.println("3. Return to the main menu");
-                
-                System.out.print("Enter your choice: ");
-                choice = Integer.parseInt(reader.nextLine());
-                
-                switch(choice){
-                    case 1:
-                        searchParts();
-                        break;
-                    case 2:
-                        performTrans();
-                        break;
-                    case 3:
-                        System.out.println();
-                        break;
-                }
+        try {
+            System.out.println("-----Operations for salesperson menu-----");
+            System.out.println("What kinds of operation would you like to perform?");
+            System.out.println("1. Search for parts");
+            System.out.println("2. Sell a part");
+            System.out.println("3. Return to the main menu");
+            
+            System.out.print("Enter your choice: ");
+            choice = Integer.parseInt(reader.nextLine());
+            
+            switch(choice){
+                case 1:
+                    searchParts();
+                    break;
+                case 2:
+                    performTrans();
+                    break;
+                case 3:
+                    System.out.println();
+                    break;
             }
-            catch(NumberFormatException e){
-                System.err.println(e);
-                choice =-1;
-            }
+        }
+        catch(NumberFormatException e){
+            System.err.println(e);
+            choice =-1;
         }
     }
 
@@ -195,21 +193,40 @@ public class SalespersonMenu {
                 partAvailQuan = Integer.valueOf(rs.getString(3));
             }
 
+            if (partID == null){
+                System.out.println("There are no parts with PartID = " + partChoice + "\n");
+                return;
+            }
+
             if (partAvailQuan <= 0){
                 System.out.println("There are no parts left with PartID = " + partChoice + "\n");
                 return;
             }
             
+            ResultSet rs1 = stmt.executeQuery("SELECT S.SalesID " + 
+            "FROM Salesperson S WHERE S.SalesID = " + salesChoice + ";");
+
+            String salesID = null;
+
+            while (rs1.next()){
+                salesID = rs1.getString(1);
+            }
+
+            if (salesID == null){
+                System.out.println("There is no salesperson with SalesID = " + salesChoice + "\n");
+                return;
+            }
+
             stmt.executeUpdate("UPDATE Part " + 
             "SET PartAvailQuan = PartAvailQuan - 1 " + 
             "WHERE PartID = " + partChoice + ";");
 
-            ResultSet rs1 = stmt.executeQuery("SELECT COUNT(*) FROM Transaction;");
+            ResultSet rs2 = stmt.executeQuery("SELECT COUNT(*) FROM Transaction;");
 
             int lastTransID = 0;
 
-            while (rs1.next()){
-                lastTransID = Integer.valueOf(rs1.getString(1));
+            while (rs2.next()){
+                lastTransID = Integer.valueOf(rs2.getString(1));
             }
 
             PreparedStatement pstmt = db.conn.prepareStatement("INSERT INTO Transaction VALUES (?,?,?,?)");
@@ -228,6 +245,8 @@ public class SalespersonMenu {
 
             stmt.close();
             rs.close();
+            rs1.close();
+            rs2.close();
             pstmt.close();
 
             System.out.println("End of Query");
